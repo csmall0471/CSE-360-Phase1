@@ -73,11 +73,11 @@ public class builderTest extends JFrame {
 		btnCheckValidity.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) {
 						textPane.setText("");
-						String test = txtInputFileName.getText();
+						String fileName = txtInputFileName.getText();
 						try {
 							BufferedReader br;
 							br = new BufferedReader(
-							new InputStreamReader(new FileInputStream(test)));
+							new InputStreamReader(new FileInputStream(fileName)));
 							textPane.setText(textPane.getText() + "File inputed\n\nPreview:\n");
 							int count = 0;
 							while(br.readLine() !=null)
@@ -87,7 +87,7 @@ public class builderTest extends JFrame {
 							br.close();
 							String ary[] = new String[count];
 							br = new BufferedReader(
-									new InputStreamReader(new FileInputStream(test)));
+									new InputStreamReader(new FileInputStream(fileName)));
 							for(int i = 0; i< count; i++)
 							{
 								String toBeInserted = br.readLine();
