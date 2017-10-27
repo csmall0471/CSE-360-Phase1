@@ -18,6 +18,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
@@ -79,6 +81,8 @@ public class builderTest extends JFrame {
 							br = new BufferedReader(
 							new InputStreamReader(new FileInputStream(fileName)));
 							textPane.setText(textPane.getText() + "File inputed\n\nPreview:\n");
+							
+			
 							int count = 0;
 							while(br.readLine() !=null)
 							{
@@ -91,9 +95,27 @@ public class builderTest extends JFrame {
 							for(int i = 0; i< count; i++)
 							{
 								String toBeInserted = br.readLine();
-								ary[i]=toBeInserted;
+								ary[i] = toBeInserted;
 								textPane.setText(textPane.getText() + toBeInserted +"\n");
 							}
+							
+							
+							
+							
+							File inFile = new File(fileName); // input file to be parsed
+							NumberFormat doubleFormat = new DecimalFormat("#0.00");
+							FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
+							fileData.compute(); // uses the file to compute the data
+							System.out.println("Number of Lines: " + fileData.getNumLines());
+							System.out.println("Blank Lines: " + fileData.getBlankLines());
+							System.out.println("Number of Spaces: " + fileData.getNumSpaces());
+							System.out.println("Word Count: " + fileData.getNumWords());
+							System.out.println("Chars Per Line: " + doubleFormat.format(fileData.getCharsPerLine()));
+							System.out.println("Avg Word Length: " + doubleFormat.format(fileData.getAvgWordLen()));
+							
+							
+							
+				
 							history.add(ary);
 							
 						} catch (FileNotFoundException e1) {
