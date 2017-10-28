@@ -112,7 +112,7 @@ public class FileParser {
 						else
 							words.put(newWord, 1);		// place the word in the map for the first time
 						
-						System.out.println("value: " + newWord + " key: " + words.get(newWord));
+						//System.out.println("value: " + newWord + " key: " + words.get(newWord));
 
 						newWord = ""; 		// reset the new word string
 					}
