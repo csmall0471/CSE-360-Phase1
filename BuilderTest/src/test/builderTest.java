@@ -112,6 +112,7 @@ public class builderTest extends JFrame {
 							System.out.println("Word Count: " + fileData.getNumWords());
 							System.out.println("Chars Per Line: " + doubleFormat.format(fileData.getCharsPerLine()));
 							System.out.println("Avg Word Length: " + doubleFormat.format(fileData.getAvgWordLen()));
+							System.out.println("Most common word " + fileData.getMostCommonWord());
 							
 							
 							

@@ -2,6 +2,9 @@ package test;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.BufferedReader;
 
 public class FileParser {
@@ -14,9 +17,10 @@ public class FileParser {
 	private int blankLines;
 	private int numSpace;
 	private int numWords;
-	private double avgWordLen;
 	private double avgCharsPerLine;
+	private double avgWordLen;
 	private String mostCommonWord;
+	private Map<String, Integer> words;
 	
 	public FileParser(File inFile)	// constructor which initializes instance file to parameter file
 	{
@@ -29,6 +33,7 @@ public class FileParser {
 		this.avgWordLen = 0;
 		this.avgCharsPerLine = 0;
 		this.mostCommonWord = " ";
+		words = new HashMap<String, Integer>();
 	}
 	
 	// getters
@@ -86,41 +91,71 @@ public class FileParser {
 				currentCharsInLine = 0;	// reset this counter for each new line
 				int i = 0;
 				char currentChar;
+				String newWord = "";
 				
 				while(i < currentLine.length())
 				{
 					currentChar = currentLine.charAt(i);
-					if(currentChar == ' ')
+					if(currentChar == ' ' || (i == currentLine.length() - 1))
 					{
-						numSpace++;
-						numWords++;
+						if(currentChar == ' ')
+						{
+							numSpace++;
+							numWords++;
+						}
+						
+						newWord += currentChar; // add the final char to the word, and place it in hashmap
+						newWord = newWord.toLowerCase().trim();
+						
+						if(words.containsKey(newWord))
+							words.put(newWord, words.get(newWord) + 1);	// place the word in the map and increase count
+						else
+							words.put(newWord, 1);		// place the word in the map for the first time
+						
+						System.out.println("value: " + newWord + " key: " + words.get(newWord));
+
+						newWord = ""; 		// reset the new word string
 					}
 					else
+					{
 						currentCharsInLine++;
+						newWord += currentChar; 		// append character to word string
+					}
 					i++;
 				} // end while
 				
 				avgCharsPerLine += currentCharsInLine; // add the num of chars in the line we just parsed
 			} // end while
 			
-			System.out.println("char sum: " + avgCharsPerLine);
-			
 			if(numLines != 0)
 				avgCharsPerLine /= numLines; // up to this point, aveCharsPerLine is a running sum
 			
 			fileScan.close();
+			calcWordData();
 		}
 		catch(IOException e)
 		{
 			System.err.println("File not found");
 		}
 	}
+
+	// calculates average length and most common word
+	private void calcWordData()
+	{
+		int maxInstances = Collections.max(words.values()); // the number of times the max num was seen
+
+		for(Map.Entry<String, Integer> entry : words.entrySet())
+		{
+			if(entry.getValue() == maxInstances)
+				mostCommonWord = entry.getKey();
+			avgWordLen += entry.getKey().length();
+		}
+		avgWordLen /= words.size();
+	}
+	
+	public void printHashMap()
+	{
+		for(Map.Entry<String, Integer> entry : words.entrySet())
+			System.out.println("Word: " + entry.getKey() + " was seen " + entry.getValue() + " times");
+	}
 }
-
-
-
-
-
-
-
-
