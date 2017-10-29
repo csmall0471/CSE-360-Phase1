@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -18,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
@@ -27,6 +29,7 @@ public class builderTest extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtInputFileName;
+	int currFile;
 
 	/**
 	 * Launch the application.
@@ -49,12 +52,18 @@ public class builderTest extends JFrame {
 	 */
 	public builderTest() {
 		LinkedList<String[]> history = new LinkedList<String[]>();
+		LinkedList<String> historyFiles = new LinkedList<String>();
+		currFile = 0;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 453);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		JComboBox<String> fileHistory = new JComboBox<String>();
+		fileHistory.setBounds(332, 24, 120, 29);
+		contentPane.add(fileHistory);
 		
 		JLabel lblNewLabel = new JLabel("Text Analyzer");
 		lblNewLabel.setBounds(179, 6, 91, 16);
@@ -82,7 +91,6 @@ public class builderTest extends JFrame {
 							br = new BufferedReader(
 							new InputStreamReader(new FileInputStream(fileName)));
 							textPane.setText(textPane.getText() + "File inputed\n\nPreview:\n");
-							
 			
 							int count = 0;
 							while(br.readLine() !=null)
@@ -97,17 +105,19 @@ public class builderTest extends JFrame {
 							{
 								String toBeInserted = br.readLine();
 								ary[i] = toBeInserted;
-								textPane.setText(textPane.getText() + toBeInserted +"\n");
+								textPane.setText(textPane.getText() + toBeInserted + "\n");
 							}
 							
-							
+							history.add(ary);
+							historyFiles.add(fileName);
+							fileHistory.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));//remove all previous directories, show only file name
 							
 							
 							File inFile = new File(fileName); // input file to be parsed
 							NumberFormat doubleFormat = new DecimalFormat("#0.00");
 							FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 							fileData.compute(); // uses the file to compute the data
-							textPane.setText( "File inputed.\nPlease make a selection to the left.\n");
+							textPane.setText(textPane.getText()+ "File inputed.\nPlease make a selection to the left.\n");
 							//System.out.println("Number of Lines: " + fileData.getNumLines());
 							//System.out.println("Blank Lines: " + fileData.getBlankLines());
 							//System.out.println("Number of Spaces: " + fileData.getNumSpaces());
@@ -116,10 +126,6 @@ public class builderTest extends JFrame {
 							//System.out.println("Avg Word Length: " + doubleFormat.format(fileData.getAvgWordLen()));
 							//System.out.println("Most common word " + fileData.getMostCommonWord());
 							
-							
-							
-				
-							history.add(ary);
 							
 						} catch (FileNotFoundException e1) {
 							// TODO Auto-generated catch block
@@ -141,7 +147,7 @@ public class builderTest extends JFrame {
 		contentPane.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -156,7 +162,7 @@ public class builderTest extends JFrame {
 		btnBlankLines.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
 								
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -170,7 +176,7 @@ public class builderTest extends JFrame {
 		btnCountWords.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
 								
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -184,7 +190,7 @@ public class builderTest extends JFrame {
 		btnCountSpaces.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
 								
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -198,7 +204,7 @@ public class builderTest extends JFrame {
 		btnAvgCharline.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
 
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -212,7 +218,7 @@ public class builderTest extends JFrame {
 		btnAvgWordLength.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
 							
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -225,7 +231,7 @@ public class builderTest extends JFrame {
 		contentPane.add(btnMostComWord);
 		btnMostComWord.addActionListener(new ActionListener(){ 
 					public void actionPerformed(ActionEvent e) {
-								File inFile = new File(txtInputFileName.getText()); // input file to be parsed
+								File inFile = new File(historyFiles.get(currFile)); // input file to be parsed
 								NumberFormat doubleFormat = new DecimalFormat("#0.00");
 								FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 								fileData.compute(); // uses the file to compute the data
@@ -238,9 +244,29 @@ public class builderTest extends JFrame {
 		contentPane.add(btnHelp);
 		
 		
-		JButton btnHistory = new JButton("File History");
-		btnHistory.setBounds(332, 24, 120, 29);
+		JLabel btnHistory = new JLabel("Selected File");
+		btnHistory.setBounds(332, 0, 120, 29);
 		contentPane.add(btnHistory);
+		fileHistory.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				JComboBox box = (JComboBox) e.getSource();
+				for(int i = 0; i<historyFiles.size();i++){
+					String file = historyFiles.get(i);
+					textPane.setText("");
+					if(box.getSelectedItem().equals(file)){
+						String[] text = history.get(i);
+						currFile = i;
+						textPane.setText("Preview:\n");
+						for(int j = 0; j<text.length;j++){
+							textPane.setText(textPane.getText() + text[j] + "\n");
+						}
+						break;
+					}
+				}
+			}
+		});
+		
+		
 		
 	}
 	public boolean checkValidity(String fileName) throws IOException
