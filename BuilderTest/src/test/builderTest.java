@@ -50,7 +50,6 @@ public class builderTest extends JFrame {
 	public builderTest() {
 		LinkedList<String[]> history = new LinkedList<String[]>();
 		LinkedList<FileParser> historyFiles = new LinkedList<FileParser>();
-		currFile = 0;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 453);
 		contentPane = new JPanel();
@@ -197,7 +196,7 @@ public class builderTest extends JFrame {
 				NumberFormat doubleFormat = new DecimalFormat("#0.00");
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Average Char/Line: "+ fileData.getCharsPerLine()+"\n");
+				textPane.setText(textPane.getText()+"Average Char/Line: "+ String.format("%.2f", fileData.getCharsPerLine())+"\n");
 														
 			}
 		});
@@ -212,7 +211,7 @@ public class builderTest extends JFrame {
 				NumberFormat doubleFormat = new DecimalFormat("#0.00");
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Average Word Length: "+ fileData.getAvgWordLen()+"\n");
+				textPane.setText(textPane.getText()+"Average Word Length: "+ String.format("%.2f", fileData.getAvgWordLen())+"\n");
 														
 			}
 		});
