@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.*;
 import java.awt.EventQueue;
 
+import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.*;
 import java.awt.Color;
 import javax.swing.JTextPane;
 import java.awt.event.ActionListener;
@@ -21,12 +23,30 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.awt.event.ActionEvent;
+import javax.swing.border.Border;
+import java.awt.image.*;
+import java.lang.*;
+import javax.imageio.*;
 
-public class builderTest extends JFrame {
+public class builderTest extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtInputFileName;
+	private JButton btnCheckValidity;
+	private JTextPane textPane;
+	private JButton btnNewButton;
+	private JButton btnBlankLines;
+	private JButton btnCountWords;
+	private JButton btnCountSpaces;
+	private JButton btnAvgCharline;
+	private JButton btnAvgWordLength;
+	private JButton btnMostComWord;
 	int currFile;
+	LinkedList<String[]> history;
+	LinkedList<FileParser> historyFiles;
+	JComboBox fileHistory;
+	JList<String> combineFiles;
+	private JButton combineBtn;
 
 	/**
 	 * Launch the application.
@@ -48,150 +68,59 @@ public class builderTest extends JFrame {
 	 * Create the frame.
 	 */
 	public builderTest() {
+<<<<<<< HEAD
 		LinkedList<String[]> history = new LinkedList<String[]>();
 		LinkedList<FileParser> historyFiles = new LinkedList<FileParser>();
+=======
+		super();
+		this.history = new LinkedList<String[]>();
+		this.historyFiles = new LinkedList<FileParser>();
+		this.currFile = 0;
+>>>>>>> origin/master
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 453);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.contentPane = new JPanel();
+		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		this.contentPane.setLayout(null);
+		this.contentPane.setBackground(Color.white);
 		
-		JLabel lblNewLabel = new JLabel("Text Analyzer");
-		lblNewLabel.setBounds(179, 6, 91, 16);
-		contentPane.add(lblNewLabel);
+		this.txtInputFileName = new JTextField();
+		this.txtInputFileName.setForeground(Color.GRAY);
+		this.txtInputFileName.setText("Input New File");
+		this.txtInputFileName.setBounds(6, 15, 130, 29);
+		this.add(txtInputFileName);
+		this.txtInputFileName.setColumns(10);
 		
-		txtInputFileName = new JTextField();
-		txtInputFileName.setForeground(Color.GRAY);
-		txtInputFileName.setText("Input File Name...");
-		txtInputFileName.setBounds(6, 24, 207, 26);
-		contentPane.add(txtInputFileName);
-		txtInputFileName.setColumns(10);
+		this.textPane = new JTextPane();
+		this.textPane.setBounds(149, 75, 455, 340);
+		this.textPane.setBackground(new Color(220,220,220));
+		this.textPane.setForeground(new Color(94,173,255));
+		this.add(textPane);
 		
-		JTextPane textPane = new JTextPane();
-		textPane.setBounds(149, 62, 465, 363);
-		contentPane.add(textPane);
+		this.fileHistory = new JComboBox<String>();
+		this.fileHistory.setBounds(245, 24, 120, 29);
+		this.fileHistory.addItem("...");
+		this.add(fileHistory);
 		
-		JComboBox<String> fileHistory = new JComboBox<String>();
-		fileHistory.setBounds(332, 24, 120, 29);
-		fileHistory.addItem("...");
-		contentPane.add(fileHistory);
+		JLabel textPaneTitle = new JLabel("Console");
+		textPaneTitle.setFont(new Font("garamond", Font.BOLD | Font.ITALIC, 20));
+		textPaneTitle.setForeground(new Color(94,173,255));
+		textPaneTitle.setBounds(335, 50, 150, 20);
+		//contentPane.add(textPaneTitle);
 		
-		JButton btnCheckValidity = new JButton("Input File");
-		btnCheckValidity.addActionListener(new ActionListener() { 
-			public void actionPerformed(ActionEvent e) {
-						textPane.setText("");
-						String fileName = txtInputFileName.getText(); //inputed by user 
-						try {
-							BufferedReader br;
-							br = new BufferedReader(
-							new InputStreamReader(new FileInputStream(fileName)));
-							textPane.setText(textPane.getText() + "File inputed\n\nPlease make a Selection\n");
-			
-							int count = 0;
-							while(br.readLine() !=null)//counts the number of lines in the file
-							{
-								count++;
-							}
-							br.close();
-							String ary[] = new String[count]; //string array will hold the lines of the txt file
-							br = new BufferedReader(
-							new InputStreamReader(new FileInputStream(fileName)));
-							
-							for(int i = 0; i< count; i++)//insert the strings into the array
-							{
-								String toBeInserted = br.readLine();
-								ary[i] = toBeInserted;
-								textPane.setText(textPane.getText() + toBeInserted +"\n");
-							}
-							history.add(ary);
-							
-							
-							
-							
-							File inFile = new File(fileName); // input file to be parsed
-							NumberFormat doubleFormat = new DecimalFormat("#0.00");
-							FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-							fileData.compute(); // uses the file to compute the data
-							historyFiles.add(fileData);
-							fileHistory.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));//remove all previous directories, show only file name
-						} catch (FileNotFoundException e1) {
-							// TODO Auto-generated catch block
-							textPane.setText(textPane.getText() + "File name not found\n");
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-		}				
-		});
-		btnCheckValidity.setBounds(209, 24, 103, 29);
-		contentPane.add(btnCheckValidity);
-			
-		JButton btnNewButton = new JButton("Count Lines");
-		btnNewButton.setBounds(0, 62, 131, 29);
-		contentPane.add(btnNewButton);
-		btnNewButton.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Line Count: "+ fileData.getNumLines()+"\n");
-														
-			}
-		});
-				
-				
-		JButton btnBlankLines = new JButton("Blank Lines");
-		btnBlankLines.setBounds(0, 119, 131, 29);
-		contentPane.add(btnBlankLines);
-		btnBlankLines.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-									
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Blank Line Count: "+ fileData.getBlankLines()+"\n");												
-			}
-		});
-				
-		JButton btnCountWords = new JButton("Count Words");
-		btnCountWords.setBounds(0, 176, 131, 29);
-		contentPane.add(btnCountWords);
-		btnCountWords.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-										
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Word Count: "+ fileData.getNumWords()+"\n");
-														
-			}
-		});
-				
-		JButton btnCountSpaces = new JButton("Count Spaces");
-		btnCountSpaces.setBounds(0, 233, 131, 29);
-		contentPane.add(btnCountSpaces);
-		btnCountSpaces.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-										
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Space Count: "+ fileData.getNumSpaces()+"\n");
-														
-			}
-		});
-				
-		JButton btnAvgCharline = new JButton("AVG Char/Line");
-		btnAvgCharline.setBounds(0, 290, 131, 29);
-		contentPane.add(btnAvgCharline);
-		btnAvgCharline.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
+		JLabel functions = new JLabel("Functions");
+		functions.setFont(new Font("garamond", Font.BOLD | Font.ITALIC, 20));
+		functions.setForeground(new Color(94,173,255));
+		functions.setBounds(19, 50, 150, 20);
+		contentPane.add(functions);
+		
+		this.combineFiles = new JList<String>();
+		//combineFiles.setBounds(0, 0, 20, 20);
+		combineFiles.setLayoutOrientation(JList.VERTICAL);
+		combineFiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
+<<<<<<< HEAD
 				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
 				NumberFormat doubleFormat = new DecimalFormat("#0.00");
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
@@ -215,23 +144,96 @@ public class builderTest extends JFrame {
 														
 			}
 		});
-				
-		JButton btnMostComWord = new JButton("Most Com Word");
-		btnMostComWord.setBounds(0, 404, 131, 29);
-		contentPane.add(btnMostComWord);
-		btnMostComWord.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Most Common Word: "+ fileData.getMostCommonWord()+"\n");
-														
-			}
-		});
+=======
 		
-		JLabel lblHelp = new JLabel("Help:");
-		lblHelp.setBounds(500, 9, 40, 15);
+		JScrollPane listScroll = new JScrollPane(combineFiles);
+		listScroll.setPreferredSize(new Dimension(90,50));
+		listScroll.setBounds(385, 1, 90, 50);
+		this.add(listScroll);
+		
+		
+		
+		try {
+			
+			BufferedImage buttonImage = ImageIO.read(new File("comBtn.png"));
+		
+				
+		this.combineBtn = new JButton(new ImageIcon(buttonImage));
+		this.combineBtn.setContentAreaFilled(false);
+		this.combineBtn.setBorder(BorderFactory.createEmptyBorder());
+		this.combineBtn.addActionListener(this);
+		this.combineBtn.setBounds(374, 50, 115, 29);
+		this.add(combineBtn);
+		
+		buttonImage = ImageIO.read(new File("inputBtn.png"));
+		this.btnCheckValidity = new JButton(new ImageIcon(buttonImage));
+		this.btnCheckValidity.setContentAreaFilled(false);
+		this.btnCheckValidity.setBorder(BorderFactory.createEmptyBorder());
+		this.btnCheckValidity.addActionListener(this);
+		this.btnCheckValidity.setBounds(125, 15, 115, 29);
+		this.add(btnCheckValidity);
+		
+		buttonImage = ImageIO.read(new File("cntLineBtn.png"));	
+		this.btnNewButton = new JButton(new ImageIcon(buttonImage));
+		this.btnNewButton.setContentAreaFilled(false);
+		this.btnNewButton.setBorder(BorderFactory.createEmptyBorder());
+		this.btnNewButton.setBounds(3, 75, 131, 29);
+		this.add(btnNewButton);
+		this.btnNewButton.addActionListener(this);
+>>>>>>> origin/master
+				
+		buttonImage = ImageIO.read(new File("cntLinBtn.png"));		
+		this.btnBlankLines = new JButton(new ImageIcon(buttonImage));
+		this.btnBlankLines.setContentAreaFilled(false);
+		this.btnBlankLines.setBorder(BorderFactory.createEmptyBorder());
+		this.btnBlankLines.setBounds(3, 115, 131, 29);
+		this.add(btnBlankLines);
+		this.btnBlankLines.addActionListener(this);
+		
+		buttonImage = ImageIO.read(new File("cntWrdBtn.png"));		
+		this.btnCountWords = new JButton(new ImageIcon(buttonImage));
+		this.btnCountWords.setContentAreaFilled(false);
+		this.btnCountWords.setBorder(BorderFactory.createEmptyBorder());
+		this.btnCountWords.setBounds(3, 155, 131, 29);
+		this.add(btnCountWords);
+		this.btnCountWords.addActionListener(this);
+		
+		buttonImage = ImageIO.read(new File("cntSpcBtn.png"));		
+		this.btnCountSpaces = new JButton(new ImageIcon(buttonImage));
+		this.btnCountSpaces.setContentAreaFilled(false);
+		this.btnCountSpaces.setBorder(BorderFactory.createEmptyBorder());
+		this.btnCountSpaces.setBounds(3, 195, 131, 29);
+		this.add(btnCountSpaces);
+		this.btnCountSpaces.addActionListener(this);
+		
+		buttonImage = ImageIO.read(new File("avgChrBtn.png"));		
+		this.btnAvgCharline = new JButton(new ImageIcon(buttonImage));
+		this.btnAvgCharline.setContentAreaFilled(false);
+		this.btnAvgCharline.setBorder(BorderFactory.createEmptyBorder());
+		this.btnAvgCharline.setBounds(3, 235, 131, 29);
+		this.add(btnAvgCharline);
+		this.btnAvgCharline.addActionListener(this);
+		
+		buttonImage = ImageIO.read(new File("avgWrdBtn.png"));		
+		this.btnAvgWordLength = new JButton(new ImageIcon(buttonImage));
+		this.btnAvgWordLength.setContentAreaFilled(false);
+		this.btnAvgWordLength.setBorder(BorderFactory.createEmptyBorder());
+		this.btnAvgWordLength.setBounds(3, 275, 131, 29);
+		this.add(btnAvgWordLength);
+		this.btnAvgWordLength.addActionListener(this);
+		
+		buttonImage = ImageIO.read(new File("comWrdBtn.png"));		
+		this.btnMostComWord = new JButton(new ImageIcon(buttonImage));
+		this.btnMostComWord.setContentAreaFilled(false);
+		this.btnMostComWord.setBorder(BorderFactory.createEmptyBorder());
+		this.btnMostComWord.setBounds(3, 315, 131, 29);
+		this.add(btnMostComWord);
+		this.btnMostComWord.addActionListener(this);
+		
+		JLabel lblHelp = new JLabel("Help");
+		lblHelp.setFont(new Font("garamond", Font.BOLD, 14));
+		lblHelp.setForeground(new Color(94,173,255));
+		lblHelp.setBounds(539, 7, 40, 15);
 		contentPane.add(lblHelp);
 		
 		String[] helpItems = {"...", "File Input", "Calculations", "Multiple File Input"};
@@ -276,11 +278,13 @@ public class builderTest extends JFrame {
 				
 			}
 		});
-		contentPane.add(cbxHelp);
+		this.add(cbxHelp);
 		
-		JLabel btnHistory = new JLabel("Selected File");
-		btnHistory.setBounds(332, 0, 120, 29);
-		contentPane.add(btnHistory);
+		JLabel btnHistory = new JLabel("File History");
+		btnHistory.setFont(new Font("garamond", Font.BOLD, 14));
+		btnHistory.setForeground(new Color(94,173,255));
+		btnHistory.setBounds(265, 1, 120, 29);
+		this.add(btnHistory);
 		fileHistory.addActionListener(new ActionListener(){
 		 			public void actionPerformed(ActionEvent e){
 		 				//find file name in ArrayList
@@ -307,9 +311,12 @@ public class builderTest extends JFrame {
 		 					}
 		 				}
 		 			}
-		 		});
-		
+		 		}); 
+		} catch (Exception e) {
+			
+		}
 	}
+	
 	public boolean checkValidity(String fileName) throws IOException
 	{
 		BufferedReader br = new BufferedReader(
@@ -322,6 +329,66 @@ public class builderTest extends JFrame {
 		{
 			br.close();
 			return false;
+		}
+	}
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnCheckValidity) {
+			textPane.setText("");
+			String fileName = txtInputFileName.getText(); //inputed by user 
+			try {
+				BufferedReader br;
+				br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(fileName)));
+				textPane.setText(textPane.getText() + "File inputed\n\nPlease make a Selection\n");
+				
+				int count = 0;
+				while(br.readLine() !=null)//counts the number of lines in the file
+				{
+					count++;
+				}
+				br.close();
+				String ary[] = new String[count]; //string array will hold the lines of the txt file
+				br = new BufferedReader(
+				new InputStreamReader(new FileInputStream(fileName)));
+								
+				for(int i = 0; i< count; i++)//insert the strings into the array
+				{
+					String toBeInserted = br.readLine();
+					ary[i] = toBeInserted;
+					textPane.setText(textPane.getText() + toBeInserted +"\n");
+				}
+				history.add(ary);
+
+				File inFile = new File(fileName); // input file to be parsed
+				NumberFormat doubleFormat = new DecimalFormat("#0.00");
+				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
+				fileData.compute(); // uses the file to compute the data
+				historyFiles.add(fileData);
+				fileHistory.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));//remove all previous directories, show only file name
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				textPane.setText(textPane.getText() + "File name not found\n");
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else{
+			FileParser file = historyFiles.get(currFile);
+			if (e.getSource() == btnNewButton) {
+				textPane.setText(textPane.getText()+"Line Count: "+ file.getNumLines()+"\n");
+			} else if(e.getSource() == btnBlankLines){
+				textPane.setText(textPane.getText()+"Blank Line Count: "+ file.getBlankLines()+"\n");
+			} else if(e.getSource() == btnCountWords){
+				textPane.setText(textPane.getText()+"Word Count: "+ file.getNumWords()+"\n");
+			} else if(e.getSource() == btnCountSpaces){
+				textPane.setText(textPane.getText()+"Space Count: "+ file.getNumSpaces()+"\n");
+			} else if(e.getSource() == btnAvgCharline){
+				textPane.setText(textPane.getText()+"Average Char/Line: "+ file.getCharsPerLine()+"\n");		
+			} else if(e.getSource() == btnAvgWordLength){
+				textPane.setText(textPane.getText()+"Average Word Length: "+ file.getAvgWordLen()+"\n");
+			} else if(e.getSource() == btnMostComWord){
+				textPane.setText(textPane.getText()+"Most Common Word: "+ file.getMostCommonWord()+"\n");
+			}
 		}
 	}
 }
