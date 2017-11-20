@@ -68,15 +68,10 @@ public class builderTest extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public builderTest() {
-<<<<<<< HEAD
-		LinkedList<String[]> history = new LinkedList<String[]>();
-		LinkedList<FileParser> historyFiles = new LinkedList<FileParser>();
-=======
 		super();
 		this.history = new LinkedList<String[]>();
 		this.historyFiles = new LinkedList<FileParser>();
 		this.currFile = 0;
->>>>>>> origin/master
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 620, 453);
 		this.contentPane = new JPanel();
@@ -120,31 +115,6 @@ public class builderTest extends JFrame implements ActionListener {
 		combineFiles.setLayoutOrientation(JList.VERTICAL);
 		combineFiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-<<<<<<< HEAD
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Average Char/Line: "+ String.format("%.2f", fileData.getCharsPerLine())+"\n");
-														
-			}
-		});
-				
-		JButton btnAvgWordLength = new JButton("AVG Word Len");
-		btnAvgWordLength.setBounds(0, 347, 131, 29);
-		contentPane.add(btnAvgWordLength);
-		btnAvgWordLength.addActionListener(new ActionListener(){ 
-			public void actionPerformed(ActionEvent e) {
-									
-				File inFile = historyFiles.get(currFile).getFile(); // input file to be parsed // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
-				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
-				fileData.compute(); // uses the file to compute the data
-				textPane.setText(textPane.getText()+"Average Word Length: "+ String.format("%.2f", fileData.getAvgWordLen())+"\n");
-														
-			}
-		});
-=======
 		
 		JScrollPane listScroll = new JScrollPane(combineFiles);
 		listScroll.setPreferredSize(new Dimension(90,50));
@@ -180,7 +150,6 @@ public class builderTest extends JFrame implements ActionListener {
 		this.btnNewButton.setBounds(3, 75, 131, 29);
 		this.add(btnNewButton);
 		this.btnNewButton.addActionListener(this);
->>>>>>> origin/master
 				
 		buttonImage = ImageIO.read(new File("cntLinBtn.png"));		
 		this.btnBlankLines = new JButton(new ImageIcon(buttonImage));
