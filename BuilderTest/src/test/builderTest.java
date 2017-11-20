@@ -123,76 +123,64 @@ public class builderTest extends JFrame implements ActionListener {
 		
 		
 		
-		try {
-			
-			BufferedImage buttonImage = ImageIO.read(new File("comBtn.png"));
-		
-				
-		this.combineBtn = new JButton(new ImageIcon(buttonImage));
-		this.combineBtn.setContentAreaFilled(false);
-		this.combineBtn.setBorder(BorderFactory.createEmptyBorder());
+	try {		
+		this.combineBtn = new JButton("Combine");
+		this.combineBtn.setForeground(new Color(94,173,255));
 		this.combineBtn.addActionListener(this);
 		this.combineBtn.setBounds(374, 50, 115, 29);
 		this.add(combineBtn);
 		
-		buttonImage = ImageIO.read(new File("inputBtn.png"));
-		this.btnCheckValidity = new JButton(new ImageIcon(buttonImage));
+		this.btnCheckValidity = new JButton("Insert");
 		this.btnCheckValidity.setContentAreaFilled(false);
 		this.btnCheckValidity.setBorder(BorderFactory.createEmptyBorder());
+		this.btnCheckValidity.setForeground(new Color(94,173,255));		
 		this.btnCheckValidity.addActionListener(this);
-		this.btnCheckValidity.setBounds(125, 15, 115, 29);
+		this.btnCheckValidity.setBounds(105, 16, 115, 29);
 		this.add(btnCheckValidity);
 		
-		buttonImage = ImageIO.read(new File("cntLineBtn.png"));	
-		this.btnNewButton = new JButton(new ImageIcon(buttonImage));
+		this.btnNewButton = new JButton("Count Lines");
 		this.btnNewButton.setContentAreaFilled(false);
 		this.btnNewButton.setBorder(BorderFactory.createEmptyBorder());
 		this.btnNewButton.setBounds(3, 75, 131, 29);
 		this.add(btnNewButton);
 		this.btnNewButton.addActionListener(this);
-				
-		buttonImage = ImageIO.read(new File("cntLinBtn.png"));		
-		this.btnBlankLines = new JButton(new ImageIcon(buttonImage));
+						
+		this.btnBlankLines = new JButton("Blank Lines");
 		this.btnBlankLines.setContentAreaFilled(false);
 		this.btnBlankLines.setBorder(BorderFactory.createEmptyBorder());
 		this.btnBlankLines.setBounds(3, 115, 131, 29);
 		this.add(btnBlankLines);
 		this.btnBlankLines.addActionListener(this);
-		
-		buttonImage = ImageIO.read(new File("cntWrdBtn.png"));		
-		this.btnCountWords = new JButton(new ImageIcon(buttonImage));
+			
+		this.btnCountWords = new JButton("Count Words");
 		this.btnCountWords.setContentAreaFilled(false);
 		this.btnCountWords.setBorder(BorderFactory.createEmptyBorder());
 		this.btnCountWords.setBounds(3, 155, 131, 29);
 		this.add(btnCountWords);
 		this.btnCountWords.addActionListener(this);
-		
-		buttonImage = ImageIO.read(new File("cntSpcBtn.png"));		
-		this.btnCountSpaces = new JButton(new ImageIcon(buttonImage));
+			
+		this.btnCountSpaces = new JButton("Count Spaces");
 		this.btnCountSpaces.setContentAreaFilled(false);
 		this.btnCountSpaces.setBorder(BorderFactory.createEmptyBorder());
 		this.btnCountSpaces.setBounds(3, 195, 131, 29);
 		this.add(btnCountSpaces);
 		this.btnCountSpaces.addActionListener(this);
-		
-		buttonImage = ImageIO.read(new File("avgChrBtn.png"));		
-		this.btnAvgCharline = new JButton(new ImageIcon(buttonImage));
+			
+		this.btnAvgCharline = new JButton("Avg Char/Line");
 		this.btnAvgCharline.setContentAreaFilled(false);
 		this.btnAvgCharline.setBorder(BorderFactory.createEmptyBorder());
 		this.btnAvgCharline.setBounds(3, 235, 131, 29);
 		this.add(btnAvgCharline);
 		this.btnAvgCharline.addActionListener(this);
-		
-		buttonImage = ImageIO.read(new File("avgWrdBtn.png"));		
-		this.btnAvgWordLength = new JButton(new ImageIcon(buttonImage));
+				
+		this.btnAvgWordLength = new JButton("Avg Word Length");
 		this.btnAvgWordLength.setContentAreaFilled(false);
 		this.btnAvgWordLength.setBorder(BorderFactory.createEmptyBorder());
 		this.btnAvgWordLength.setBounds(3, 275, 131, 29);
 		this.add(btnAvgWordLength);
 		this.btnAvgWordLength.addActionListener(this);
-		
-		buttonImage = ImageIO.read(new File("comWrdBtn.png"));		
-		this.btnMostComWord = new JButton(new ImageIcon(buttonImage));
+				
+		this.btnMostComWord = new JButton("Most Common Word");
 		this.btnMostComWord.setContentAreaFilled(false);
 		this.btnMostComWord.setBorder(BorderFactory.createEmptyBorder());
 		this.btnMostComWord.setBounds(3, 315, 131, 29);
