@@ -37,7 +37,8 @@ public class builderTest extends JFrame implements ActionListener {
 	int currFile;
 =======
 	private JButton btnCheckValidity;
-	private JTextPane textPane;
+	private JScrollPane scrollPane;
+	private JTextArea textPane;
 	private JButton btnNewButton;
 	private JButton btnBlankLines;
 	private JButton btnCountWords;
@@ -108,11 +109,15 @@ public class builderTest extends JFrame implements ActionListener {
 		this.txtInputFileName.setColumns(10);
 >>>>>>> refs/remotes/origin/master
 		
-		this.textPane = new JTextPane();
-		this.textPane.setBounds(149, 75, 455, 340);
-		this.textPane.setBackground(new Color(220,220,220));
-		this.textPane.setForeground(new Color(94,173,255));
-		this.add(textPane);
+		this.textPane = new JTextArea();
+		this.scrollPane = new JScrollPane(textPane);
+		this.scrollPane.setBounds(149, 75, 455, 340);
+		this.scrollPane.setBackground(new Color(220,220,220));
+		this.scrollPane.setForeground(new Color(94,173,255));
+	
+		
+		
+		this.add(scrollPane);
 		
 		this.fileHistory = new JComboBox<String>();
 		this.fileHistory.setBounds(245, 24, 120, 29);
@@ -455,6 +460,7 @@ public class builderTest extends JFrame implements ActionListener {
 		 			public void actionPerformed(ActionEvent e){
 		 				//find file name in ArrayList
 		 				JComboBox box = (JComboBox) e.getSource();
+		 				
 		 				for(int i = 0; i<historyFiles.size();i++){
 		 					String file = historyFiles.get(i).getFile().toString();
 		 					file = file.substring(file.lastIndexOf('\\')+1);
@@ -516,17 +522,18 @@ public class builderTest extends JFrame implements ActionListener {
 				String ary[] = new String[count]; //string array will hold the lines of the txt file
 				br = new BufferedReader(
 				new InputStreamReader(new FileInputStream(fileName)));
-								
+				textPane.setText(textPane.getText() + "\n_______________File Text_______________________\n");				
 				for(int i = 0; i< count; i++)//insert the strings into the array
 				{
 					String toBeInserted = br.readLine();
 					ary[i] = toBeInserted;
 					textPane.setText(textPane.getText() + toBeInserted +"\n");
 				}
+				textPane.setText(textPane.getText() + "\n_______________File Information________________\n");
 				history.add(ary);
 
 				File inFile = new File(fileName); // input file to be parsed
-				NumberFormat doubleFormat = new DecimalFormat("#0.00");
+				
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 				fileData.compute(); // uses the file to compute the data
 				historyFiles.add(fileData);
@@ -540,6 +547,7 @@ public class builderTest extends JFrame implements ActionListener {
 			}
 		} else{
 			FileParser file = historyFiles.get(currFile);
+			NumberFormat doubleFormat = new DecimalFormat("#0.00");
 			if (e.getSource() == btnNewButton) {
 				textPane.setText(textPane.getText()+"Line Count: "+ file.getNumLines()+"\n");
 			} else if(e.getSource() == btnBlankLines){
@@ -549,9 +557,9 @@ public class builderTest extends JFrame implements ActionListener {
 			} else if(e.getSource() == btnCountSpaces){
 				textPane.setText(textPane.getText()+"Space Count: "+ file.getNumSpaces()+"\n");
 			} else if(e.getSource() == btnAvgCharline){
-				textPane.setText(textPane.getText()+"Average Char/Line: "+ file.getCharsPerLine()+"\n");		
+				textPane.setText(textPane.getText()+"Average Char/Line: "+ doubleFormat.format(file.getCharsPerLine())+"\n");		
 			} else if(e.getSource() == btnAvgWordLength){
-				textPane.setText(textPane.getText()+"Average Word Length: "+ file.getAvgWordLen()+"\n");
+				textPane.setText(textPane.getText()+"Average Word Length: "+ doubleFormat.format(file.getAvgWordLen())+"\n");
 			} else if(e.getSource() == btnMostComWord){
 				textPane.setText(textPane.getText()+"Most Common Word: "+ file.getMostCommonWord()+"\n");
 			}
