@@ -104,7 +104,12 @@ public class FileParser {
 						if(currentChar == ' ')
 						{
 							numSpace++;
-							numWords++;
+							try{
+								if(currentLine.charAt(i+1) != ' ')
+									numWords++;
+							}catch(StringIndexOutOfBoundsException e){
+								// do nothing
+							}
 						}
 						
 						newWord += currentChar; // add the final char to the word, and place it in hashmap
@@ -154,6 +159,13 @@ public class FileParser {
 			avgWordLen += entry.getKey().length();
 		}
 		avgWordLen /= words.size();
+	}
+	
+	// returns the contents of the file, but without any punctuation
+	private String removePunctuation()
+	{
+		
+		return "";
 	}
 	
 	public void printHashMap()
