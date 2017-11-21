@@ -65,6 +65,9 @@ public class FileParser {
 	{
 		return mostCommonWord;
 	}	
+	public File getFile(){
+		return inFile;
+	}
 	
 	// computes all of the relevant information for the file
 	public void compute()
