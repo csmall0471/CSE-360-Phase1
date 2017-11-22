@@ -45,9 +45,9 @@ public class builderTest extends JFrame implements ActionListener {
 	int currFile;
 	LinkedList<String[]> history;
 	FileHistory historyFiles;
-	JComboBox<String> fileHistory;
-	JComboBox<String> combineFirst;
-	JComboBox<String> combineSecond;
+	JComboBox<FileParser> fileHistory;
+	JComboBox<FileParser> combineFirst;
+	JComboBox<FileParser> combineSecond;
 	private JButton combineBtn;
 
 	/**
@@ -99,9 +99,9 @@ public class builderTest extends JFrame implements ActionListener {
 		this.add(scrollPane);
 		
 		//File History
-		this.fileHistory = new JComboBox<String>();
+		this.fileHistory = new JComboBox<FileParser>();
 		this.fileHistory.setBounds(245, 24, 120, 29);
-		this.fileHistory.addItem("...");
+		this.fileHistory.addItem(null);
 		this.add(fileHistory);
 		
 		//Combine Files
@@ -123,14 +123,14 @@ public class builderTest extends JFrame implements ActionListener {
 		secondFile.setBounds(3, 410, 75, 15);
 		contentPane.add(secondFile);
 		
-		this.combineFirst = new JComboBox<String>();
+		this.combineFirst = new JComboBox<FileParser>();
 		this.combineFirst.setBounds(3, 375, 120, 29);
-		this.combineFirst.addItem("...");
+		this.combineFirst.addItem(null);
 		this.add(combineFirst);
 		
-		this.combineSecond = new JComboBox<String>();
+		this.combineSecond = new JComboBox<FileParser>();
 		this.combineSecond.setBounds(3, 425, 120, 29);
-		this.combineSecond.addItem("...");
+		this.combineSecond.addItem(null);
 		this.add(combineSecond);
 		
 		//Labels
@@ -272,11 +272,8 @@ public class builderTest extends JFrame implements ActionListener {
 		 				JComboBox box = (JComboBox) e.getSource();
 		 				
 		 				for(int i = 0; i<historyFiles.size();i++){
-		 					String file = historyFiles.get(i).getFile().toString();
-		 					file = file.substring(file.lastIndexOf('\\')+1);
 		 					textPane.setText("");
-		 					if(box.getSelectedItem().equals(file)){
-		 						String[] text = history.get(i);
+		 					if(box.getSelectedItem() != null && box.getSelectedItem().equals(historyFiles.get(i))){
 		 						currFile = i; //Save index of file being used
 		 						textPane.setText("Preview:\n\n");
 		 						//Prints out the contents of file
@@ -287,6 +284,7 @@ public class builderTest extends JFrame implements ActionListener {
 			 						while((line = br.readLine()) != null){
 			 							textPane.setText(textPane.getText() + line + "\n");
 			 						}
+			 						br.close();
 		 						} catch (IOException e1) {
 								}
 		 						break;
@@ -347,9 +345,9 @@ public class builderTest extends JFrame implements ActionListener {
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 				fileData.compute(); // uses the file to compute the data
 				historyFiles.add(fileData);
-				fileHistory.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));//remove all previous directories, show only file name
-				combineFirst.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));
-				combineSecond.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));
+				fileHistory.addItem(fileData);//remove all previous directories, show only file name
+				combineFirst.addItem(fileData);
+				combineSecond.addItem(fileData);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				textPane.setText(textPane.getText() + "File name not found\n");
@@ -375,16 +373,19 @@ public class builderTest extends JFrame implements ActionListener {
 			} else if(e.getSource() == btnMostComWord){
 				textPane.setText(textPane.getText()+"Most Common Word: "+ file.getMostCommonWord()+"\n");
 			} else if(e.getSource() == combineBtn){
-				File first = null;
-				File second = null;
+				FileParser first = null;
+				FileParser second = null;
 				for(int i=0; i < historyFiles.size();i++){
-					if(combineFirst.equals(historyFiles.get(i).getFile())){
-						first = historyFiles.get(i).getFile();
+					if(combineFirst.getSelectedItem().equals(historyFiles.get(i))){
+						first = historyFiles.get(i);
 					}
-					if(combineSecond.equals(historyFiles.get(i).getFile())){
-						second = historyFiles.get(i).getFile();
+					if(combineSecond.getSelectedItem().equals(historyFiles.get(i))){
+						second = historyFiles.get(i);
+						fileHistory.removeItem(second);
 					}
 				}
+				historyFiles.combine(first, second);
+				
 			}
 		}
 	}

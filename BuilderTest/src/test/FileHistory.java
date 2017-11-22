@@ -23,35 +23,39 @@ public class FileHistory {
 	
 	public void combine(FileParser first, FileParser second){
 		//convert FileParser objects to Files
-		File firstFile = first.getFile();
-		File secondFile = second.getFile();
-		
-		//Combine Files
-		try{
-			//Write to first File
-			FileWriter fw = new FileWriter(firstFile);
-			BufferedWriter fileScan = new BufferedWriter(fw);
+		if(first != null && second != null){
+			File firstFile = first.getFile();
+			File secondFile = second.getFile();
 			
-			//Read from Second File
-			FileReader fr = new FileReader(secondFile);
-			BufferedReader fileScan2 = new BufferedReader(fr);
 			
-			String currentLine;
-			
-			//Append all lines from second file to first file
-			while((currentLine = fileScan2.readLine()) != null){
-				fileScan.append(currentLine);
+			//Combine Files
+			try{
+				//Write to first File
+				FileWriter fw = new FileWriter(firstFile, true);
+				BufferedWriter fileScan = new BufferedWriter(fw);
+				
+				//Read from Second File
+				FileReader fr = new FileReader(secondFile);
+				BufferedReader fileScan2 = new BufferedReader(fr);
+				
+				String currentLine;
+				
+				//Append all lines from second file to first file
+				fileScan.append("\n");
+				while((currentLine = fileScan2.readLine()) != null){
+					fileScan.append(currentLine + "\n");
+				}
+				fileScan.close();
+				fileScan2.close();
+			}catch(IOException e){
+				e.printStackTrace();
 			}
-			fileScan.close();
-			fileScan2.close();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		
-		//Find and delete second file from linkedlist
-		for(int i = 0; i < historyFiles.size(); i++){
-			if(historyFiles.get(i).equals(second)){
-				historyFiles.remove(i);
+			
+			//Find and delete second file from linkedlist
+			for(int i = 0; i < historyFiles.size(); i++){
+				if(historyFiles.get(i).equals(second)){
+					historyFiles.remove(i);
+				}
 			}
 		}
 	}
