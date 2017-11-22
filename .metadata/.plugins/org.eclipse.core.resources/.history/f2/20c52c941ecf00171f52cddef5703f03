@@ -220,10 +220,7 @@ public class FileParser {
 	
 	public String toString()
 	{
-		String return_val = ""; 
-		return_val = inFile.toString().substring(inFile.toString().lastIndexOf('\\') + 1);
-		
-		return return_val;
+		return inFile.toString();
 	}
 	
 	
