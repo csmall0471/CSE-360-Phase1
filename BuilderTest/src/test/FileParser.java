@@ -1,11 +1,15 @@
 package test;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.StringBuilder;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 public class FileParser {
 	// instance variables
@@ -140,6 +144,7 @@ public class FileParser {
 			
 			fileScan.close();
 			calcWordData();
+			removePunctuation();
 		}
 		catch(IOException e)
 		{
@@ -150,22 +155,61 @@ public class FileParser {
 	// calculates average length and most common word
 	private void calcWordData()
 	{
-		int maxInstances = Collections.max(words.values()); // the number of times the max num was seen
-
-		for(Map.Entry<String, Integer> entry : words.entrySet())
+		if(!words.isEmpty())
 		{
-			if(entry.getValue() == maxInstances)
-				mostCommonWord = entry.getKey();
-			avgWordLen += entry.getKey().length();
+			int maxInstances = Collections.max(words.values()); // the number of times the max num was seen
+	
+			for(Map.Entry<String, Integer> entry : words.entrySet())
+			{
+				if(entry.getValue() == maxInstances)
+					mostCommonWord = entry.getKey();
+				avgWordLen += entry.getKey().length();
+			}
+			avgWordLen /= words.size();
 		}
-		avgWordLen /= words.size();
 	}
 	
 	// returns the contents of the file, but without any punctuation
-	private String removePunctuation()
+	public File removePunctuation()
 	{
-		
-		return "";
+		File noPunctuation = inFile;
+		try{
+			FileReader fr = new FileReader(noPunctuation);
+			FileWriter fw = new FileWriter("no_punc.txt");
+			BufferedReader br = new BufferedReader(fr);
+			BufferedWriter bw = new BufferedWriter(fw);
+			String currentLine;
+			bw.write("");
+			while((currentLine = br.readLine()) != null)
+			{	
+				StringBuilder sb = new StringBuilder(currentLine);
+				for(int i = sb.length() - 1; i >= 0; i--)
+				{
+					switch(sb.charAt(i))
+					{
+					case '.':
+					case ',':
+					case '?':
+					case '!':
+					case '-':
+					case ':':
+					case ';':
+						sb.deleteCharAt(i);
+					default:
+						break;
+					}
+				}
+				bw.append(sb.toString());
+			}
+			br.close();
+			bw.close();
+			
+		} catch(FileNotFoundException e){
+			// nothing
+		} catch(IOException e){
+			// nothing
+		}
+		return noPunctuation;
 	}
 	
 	public void printHashMap()
@@ -173,4 +217,11 @@ public class FileParser {
 		for(Map.Entry<String, Integer> entry : words.entrySet())
 			System.out.println("Word: " + entry.getKey() + " was seen " + entry.getValue() + " times");
 	}
+	
+	public String toString()
+	{
+		return inFile.toString();
+	}
+	
+	
 }
