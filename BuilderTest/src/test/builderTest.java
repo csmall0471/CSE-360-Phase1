@@ -44,9 +44,10 @@ public class builderTest extends JFrame implements ActionListener {
 	private JButton btnMostComWord;
 	int currFile;
 	LinkedList<String[]> history;
-	LinkedList<FileParser> historyFiles;
-	JComboBox fileHistory;
-	JList<String> combineFiles;
+	FileHistory historyFiles;
+	JComboBox<String> fileHistory;
+	JComboBox<String> combineFirst;
+	JComboBox<String> combineSecond;
 	private JButton combineBtn;
 
 	/**
@@ -71,16 +72,17 @@ public class builderTest extends JFrame implements ActionListener {
 	public builderTest() {
 		super();
 		this.history = new LinkedList<String[]>();
-		this.historyFiles = new LinkedList<FileParser>();
+		this.historyFiles = new FileHistory();
 		this.currFile = 0;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 620, 453);
+		setBounds(100, 100, 650, 550);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		this.contentPane.setLayout(null);
 		this.contentPane.setBackground(Color.white);
 		
+		//Input File
 		this.txtInputFileName = new JTextField();
 		this.txtInputFileName.setForeground(Color.GRAY);
 		this.txtInputFileName.setText("Input New File");
@@ -88,21 +90,50 @@ public class builderTest extends JFrame implements ActionListener {
 		this.add(txtInputFileName);
 		this.txtInputFileName.setColumns(10);
 		
+		//Main Text Area
 		this.textPane = new JTextArea();
 		this.scrollPane = new JScrollPane(textPane);
 		this.scrollPane.setBounds(149, 75, 455, 340);
 		this.scrollPane.setBackground(new Color(220,220,220));
 		this.scrollPane.setForeground(new Color(94,173,255));
-	
-		
-		
 		this.add(scrollPane);
 		
+		//File History
 		this.fileHistory = new JComboBox<String>();
 		this.fileHistory.setBounds(245, 24, 120, 29);
 		this.fileHistory.addItem("...");
 		this.add(fileHistory);
 		
+		//Combine Files
+		JLabel combine = new JLabel("Combine");
+		combine.setFont(new Font("garamond", Font.BOLD | Font.ITALIC, 20));
+		combine.setForeground(new Color(94,173,255));
+		combine.setBounds(19, 340, 150, 20);
+		contentPane.add(combine);
+		
+		JLabel firstFile = new JLabel("First");
+		firstFile.setFont(new Font("garamond",Font.PLAIN, 15));
+		firstFile.setForeground(new Color(94,173,255));
+		firstFile.setBounds(3, 360, 75, 15);
+		contentPane.add(firstFile);
+		
+		JLabel secondFile = new JLabel("Second");
+		secondFile.setFont(new Font("garamond", Font.PLAIN, 15));
+		secondFile.setForeground(new Color(94,173,255));
+		secondFile.setBounds(3, 410, 75, 15);
+		contentPane.add(secondFile);
+		
+		this.combineFirst = new JComboBox<String>();
+		this.combineFirst.setBounds(3, 375, 120, 29);
+		this.combineFirst.addItem("...");
+		this.add(combineFirst);
+		
+		this.combineSecond = new JComboBox<String>();
+		this.combineSecond.setBounds(3, 425, 120, 29);
+		this.combineSecond.addItem("...");
+		this.add(combineSecond);
+		
+		//Labels
 		JLabel textPaneTitle = new JLabel("Console");
 		textPaneTitle.setFont(new Font("garamond", Font.BOLD | Font.ITALIC, 20));
 		textPaneTitle.setForeground(new Color(94,173,255));
@@ -114,25 +145,13 @@ public class builderTest extends JFrame implements ActionListener {
 		functions.setForeground(new Color(94,173,255));
 		functions.setBounds(19, 50, 150, 20);
 		contentPane.add(functions);
-		
-		this.combineFiles = new JList<String>();
-		//combineFiles.setBounds(0, 0, 20, 20);
-		combineFiles.setLayoutOrientation(JList.VERTICAL);
-		combineFiles.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-		
-		JScrollPane listScroll = new JScrollPane(combineFiles);
-		listScroll.setPreferredSize(new Dimension(90,50));
-		listScroll.setBounds(385, 1, 90, 50);
-		this.add(listScroll);
-		
-		
 		
 	try {		
 		this.combineBtn = new JButton("Combine");
 		this.combineBtn.setForeground(new Color(94,173,255));
 		this.combineBtn.addActionListener(this);
-		this.combineBtn.setBounds(374, 50, 115, 29);
+		this.combineBtn.setBounds(3, 475, 115, 29);
 		this.add(combineBtn);
 		
 		this.btnCheckValidity = new JButton("Insert");
@@ -195,12 +214,12 @@ public class builderTest extends JFrame implements ActionListener {
 		JLabel lblHelp = new JLabel("Help");
 		lblHelp.setFont(new Font("garamond", Font.BOLD, 14));
 		lblHelp.setForeground(new Color(94,173,255));
-		lblHelp.setBounds(539, 7, 40, 15);
+		lblHelp.setBounds(413, 7, 40, 15);
 		contentPane.add(lblHelp);
 		
 		String[] helpItems = {"...", "File Input", "Calculations", "Multiple File Input"};
 		JComboBox<String> cbxHelp = new JComboBox<String>(helpItems);
-		cbxHelp.setBounds(500, 24, 114, 29);
+		cbxHelp.setBounds(374, 24, 114, 29);
 		cbxHelp.setEditable(false);
 		cbxHelp.setSelectedIndex(0);
 		cbxHelp.addActionListener(new ActionListener() {
@@ -329,6 +348,8 @@ public class builderTest extends JFrame implements ActionListener {
 				fileData.compute(); // uses the file to compute the data
 				historyFiles.add(fileData);
 				fileHistory.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));//remove all previous directories, show only file name
+				combineFirst.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));
+				combineSecond.addItem(fileName.substring(fileName.lastIndexOf('\\')+1));
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				textPane.setText(textPane.getText() + "File name not found\n");
@@ -353,6 +374,17 @@ public class builderTest extends JFrame implements ActionListener {
 				textPane.setText(textPane.getText()+"Average Word Length: "+ doubleFormat.format(file.getAvgWordLen())+"\n");
 			} else if(e.getSource() == btnMostComWord){
 				textPane.setText(textPane.getText()+"Most Common Word: "+ file.getMostCommonWord()+"\n");
+			} else if(e.getSource() == combineBtn){
+				File first = null;
+				File second = null;
+				for(int i=0; i < historyFiles.size();i++){
+					if(combineFirst.equals(historyFiles.get(i).getFile())){
+						first = historyFiles.get(i).getFile();
+					}
+					if(combineSecond.equals(historyFiles.get(i).getFile())){
+						second = historyFiles.get(i).getFile();
+					}
+				}
 			}
 		}
 	}
