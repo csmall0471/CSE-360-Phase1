@@ -15,6 +15,7 @@ public class FileParser {
 	// instance variables
 	
 	private File inFile; // file to parse through
+	private File noPunct;
 	
 	// variables holding the file information
 	private int numLines;
@@ -71,6 +72,10 @@ public class FileParser {
 	}	
 	public File getFile(){
 		return inFile;
+	}
+	public File getNoPunctuationFile()
+	{
+		return noPunct;
 	}
 	
 	// computes all of the relevant information for the file
@@ -144,7 +149,7 @@ public class FileParser {
 			
 			fileScan.close();
 			calcWordData();
-			removePunctuation();
+			noPunct = removePunctuation();
 		}
 		catch(IOException e)
 		{
@@ -172,10 +177,16 @@ public class FileParser {
 	// returns the contents of the file, but without any punctuation
 	public File removePunctuation()
 	{
-		File noPunctuation = inFile;
+		String filename = inFile.getAbsolutePath();
+		StringBuilder sb_name = new StringBuilder(filename);
+		sb_name.delete(filename.indexOf('.'), sb_name.length());
+		filename = sb_name.toString();
+		filename += "_no_punc.txt";
+
+		File noPunctuation = new File(filename);
 		try{
-			FileReader fr = new FileReader(noPunctuation);
-			FileWriter fw = new FileWriter("no_punc.txt");
+			FileReader fr = new FileReader(inFile);
+			FileWriter fw = new FileWriter(filename);
 			BufferedReader br = new BufferedReader(fr);
 			BufferedWriter bw = new BufferedWriter(fw);
 			String currentLine;
@@ -199,16 +210,17 @@ public class FileParser {
 						break;
 					}
 				}
-				bw.append(sb.toString());
+				bw.append(sb.toString() + "\n");
 			}
 			br.close();
 			bw.close();
 			
 		} catch(FileNotFoundException e){
-			// nothing
+			System.err.println(e);
 		} catch(IOException e){
-			// nothing
+			System.err.println(e);
 		}
+		
 		return noPunctuation;
 	}
 	

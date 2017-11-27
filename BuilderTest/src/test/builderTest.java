@@ -356,6 +356,7 @@ public class builderTest extends JFrame implements ActionListener {
 				fileHistory.addItem(fileData);//remove all previous directories, show only file name
 				combineFirst.addItem(fileData);
 				combineSecond.addItem(fileData);
+				currFile = historyFiles.size() - 1;
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
 				textPane.setText(textPane.getText() + "File name not found\n");
@@ -394,8 +395,25 @@ public class builderTest extends JFrame implements ActionListener {
 				}
 				historyFiles.combine(first, second);
 				
-			}else if (e.getSource()==removePunc) {
-				file.removePunctuation();
+			}else if (e.getSource() == removePunc) {
+				
+				File fileToPrint = file.getNoPunctuationFile();
+				try{
+					FileReader fr = new FileReader(fileToPrint);
+					BufferedReader br = new BufferedReader(fr);
+					String currentLine;
+					while((currentLine = br.readLine()) != null)
+						textPane.setText(textPane.getText() + currentLine + "\n");
+					br.close();
+				}
+				catch(FileNotFoundException exc)
+				{
+					System.out.println(exc);
+				}
+				catch(IOException excep)
+				{
+					System.out.println(excep);
+				}
 			}
 		}
 	}
