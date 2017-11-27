@@ -49,6 +49,7 @@ public class builderTest extends JFrame implements ActionListener {
 	JComboBox<FileParser> combineFirst;
 	JComboBox<FileParser> combineSecond;
 	private JButton combineBtn;
+	private JButton removePunc;
 
 	/**
 	 * Launch the application.
@@ -108,28 +109,28 @@ public class builderTest extends JFrame implements ActionListener {
 		JLabel combine = new JLabel("Combine");
 		combine.setFont(new Font("garamond", Font.BOLD | Font.ITALIC, 20));
 		combine.setForeground(new Color(94,173,255));
-		combine.setBounds(19, 340, 150, 20);
+		combine.setBounds(19, 380, 150, 20);
 		contentPane.add(combine);
 		
 		JLabel firstFile = new JLabel("First");
 		firstFile.setFont(new Font("garamond",Font.PLAIN, 15));
 		firstFile.setForeground(new Color(94,173,255));
-		firstFile.setBounds(3, 360, 75, 15);
+		firstFile.setBounds(3, 400, 75, 15);
 		contentPane.add(firstFile);
 		
 		JLabel secondFile = new JLabel("Second");
 		secondFile.setFont(new Font("garamond", Font.PLAIN, 15));
 		secondFile.setForeground(new Color(94,173,255));
-		secondFile.setBounds(3, 410, 75, 15);
+		secondFile.setBounds(3, 450, 75, 15);
 		contentPane.add(secondFile);
 		
 		this.combineFirst = new JComboBox<FileParser>();
-		this.combineFirst.setBounds(3, 375, 120, 29);
+		this.combineFirst.setBounds(3, 418, 120, 29);
 		this.combineFirst.addItem(null);
 		this.add(combineFirst);
 		
 		this.combineSecond = new JComboBox<FileParser>();
-		this.combineSecond.setBounds(3, 425, 120, 29);
+		this.combineSecond.setBounds(3, 465, 120, 29);
 		this.combineSecond.addItem(null);
 		this.add(combineSecond);
 		
@@ -151,7 +152,7 @@ public class builderTest extends JFrame implements ActionListener {
 		this.combineBtn = new JButton("Combine");
 		this.combineBtn.setForeground(new Color(94,173,255));
 		this.combineBtn.addActionListener(this);
-		this.combineBtn.setBounds(3, 475, 115, 29);
+		this.combineBtn.setBounds(3, 490, 115, 29);
 		this.add(combineBtn);
 		
 		this.btnCheckValidity = new JButton("Insert");
@@ -207,9 +208,16 @@ public class builderTest extends JFrame implements ActionListener {
 		this.btnMostComWord = new JButton("Most Common Word");
 		this.btnMostComWord.setContentAreaFilled(false);
 		this.btnMostComWord.setBorder(BorderFactory.createEmptyBorder());
-		this.btnMostComWord.setBounds(3, 315, 131, 29);
+		this.btnMostComWord.setBounds(5, 315, 131, 29);
 		this.add(btnMostComWord);
 		this.btnMostComWord.addActionListener(this);
+		
+		this.removePunc = new JButton("Remove Punctuation");
+		this.removePunc.setContentAreaFilled(false);
+		this.removePunc.setBorder(BorderFactory.createEmptyBorder());
+		this.removePunc.setBounds(5, 355, 131, 29);
+		this.add(removePunc);
+		this.removePunc.addActionListener(this);
 		
 		JLabel lblHelp = new JLabel("Help");
 		lblHelp.setFont(new Font("garamond", Font.BOLD, 14));
@@ -386,6 +394,8 @@ public class builderTest extends JFrame implements ActionListener {
 				}
 				historyFiles.combine(first, second);
 				
+			}else if (e.getSource()==removePunc) {
+				file.removePunctuation();
 			}
 		}
 	}
