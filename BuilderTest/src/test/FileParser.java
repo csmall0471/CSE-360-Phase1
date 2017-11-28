@@ -123,11 +123,13 @@ public class FileParser {
 						
 						newWord += currentChar; // add the final char to the word, and place it in hashmap
 						newWord = newWord.toLowerCase().trim();
-						
-						if(words.containsKey(newWord))
-							words.put(newWord, words.get(newWord) + 1);	// place the word in the map and increase count
-						else
-							words.put(newWord, 1);		// place the word in the map for the first time
+						if(!newWord.equals(""))
+						{
+							if(words.containsKey(newWord))
+								words.put(newWord, words.get(newWord) + 1);	// place the word in the map and increase count
+							else
+								words.put(newWord, 1);		// place the word in the map for the first time
+						}
 						
 						//System.out.println("value: " + newWord + " key: " + words.get(newWord));
 
@@ -160,14 +162,16 @@ public class FileParser {
 	// calculates average length and most common word
 	private void calcWordData()
 	{
+		int maxInstances = 0;
 		if(!words.isEmpty())
 		{
-			int maxInstances = Collections.max(words.values()); // the number of times the max num was seen
+			maxInstances = Collections.max(words.values()); // the number of times the max num was seen
 	
 			for(Map.Entry<String, Integer> entry : words.entrySet())
 			{
 				if(entry.getValue() == maxInstances)
 					mostCommonWord = entry.getKey();
+				
 				avgWordLen += entry.getKey().length();
 			}
 			avgWordLen /= words.size();
