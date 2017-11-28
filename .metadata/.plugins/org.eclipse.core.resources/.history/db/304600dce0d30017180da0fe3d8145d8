@@ -346,18 +346,16 @@ public class builderTest extends JFrame implements ActionListener {
 					textPane.setText(textPane.getText() + toBeInserted +"\n");
 				}
 				textPane.setText(textPane.getText() + "\n_______________File Information________________\n");
-				
 				history.add(ary);
 
 				File inFile = new File(fileName); // input file to be parsed
 				
 				FileParser fileData = new FileParser(inFile);	// parsing object with all necessary data
 				fileData.compute(); // uses the file to compute the data
-				if(historyFiles.add(fileData)){
-					fileHistory.addItem(fileData);//remove all previous directories, show only file name
-					combineFirst.addItem(fileData);
-					combineSecond.addItem(fileData);
-				}
+				historyFiles.add(fileData);
+				fileHistory.addItem(fileData);//remove all previous directories, show only file name
+				combineFirst.addItem(fileData);
+				combineSecond.addItem(fileData);
 				currFile = historyFiles.size() - 1;
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block

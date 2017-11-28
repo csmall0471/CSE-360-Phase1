@@ -13,15 +13,8 @@ public class FileHistory {
 	public FileHistory(){
 		historyFiles = new LinkedList<FileParser>();
 	}
-	public boolean add(FileParser toAdd){
-		for(int i=0; i<historyFiles.size();i++){
-			if(historyFiles.get(i).getFile().toString().equals(toAdd.getFile().toString())){
-				return false;
-			}
-		}
-		
+	public void add(FileParser toAdd){
 		historyFiles.add(toAdd);
-		return true;
 	}
 	
 	public FileParser get(int toGet){
